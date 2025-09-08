@@ -17,4 +17,4 @@ const ANIMAIS = [
 ];
 
 
-export { Animal, ANIMAIS };
+export { Animal, ANIMAIS  };
