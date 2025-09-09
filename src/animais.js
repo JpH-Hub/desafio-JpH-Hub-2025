@@ -6,9 +6,19 @@ class Animal {
   }
 }
 
-function validarAnimal(animal) {
+function validarAnimal(animal, nome, animais) {
    if (!animal) {
      throw new Error("Animal inválido"); 
+    }
+
+    let duplicados = 0;
+    for (let i of animais){
+      if (i === nome){
+        duplicados++;
+      }
+    }
+    if (duplicados > 1){
+      throw new Error("Animal inválido"); 
     }
 }
 
