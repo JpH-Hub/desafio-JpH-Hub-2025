@@ -1,1 +1,1 @@
-'RATO,BOLA';'RATO,NOVELO';'Rex,Fofo'
+'BOLA,LASER';'BOLA,NOVELO,RATO,LASER';'Mimi,Fofo,Rex,Bola'
