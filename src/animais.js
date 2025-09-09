@@ -6,6 +6,13 @@ class Animal {
   }
 }
 
+function validarAnimal(animal) {
+   if (!animal) {
+     throw new Error("Animal inválido"); 
+    }
+}
+
+
 const ANIMAIS = [
   new Animal("Rex", "cão", ["RATO", "BOLA"]),
   new Animal("Mimi", "gato", ["BOLA", "LASER"]),
@@ -17,4 +24,4 @@ const ANIMAIS = [
 ];
 
 
-export { Animal, ANIMAIS  };
+export { Animal, ANIMAIS, validarAnimal };

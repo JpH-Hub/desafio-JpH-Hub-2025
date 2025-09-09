@@ -1,17 +1,17 @@
 import * as fs from 'fs';
 import { AbrigoAnimais } from "./abrigo-animais.js";
 
-let input = fs.readFileSync('input.txt', 'utf-8');
-let res = input.replace(/[\r\n]/g, '');
-let split = res.replaceAll("'", ""); 
-let splitResult = split.split(';');
+let entrada = fs.readFileSync('input.txt', 'utf-8');
+let semQuebraLinha = entrada.replace(/[\r\n]/g, '');
+let semAspas = semQuebraLinha.replaceAll("'", ""); 
+let resultado = semAspas.split(';');
 
-const resultado = new AbrigoAnimais()
-const output = resultado.encontraPessoas(splitResult[0], splitResult[1], splitResult[2]);
-
-
+const abrigo = new AbrigoAnimais()
+const listaFinal = abrigo.encontraPessoas(resultado[0], resultado[1], resultado[2]);
 
 
-console.log(output);
+
+
+console.log( listaFinal );
 
 
