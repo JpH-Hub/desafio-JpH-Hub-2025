@@ -23,6 +23,22 @@ function validarAnimal(animal, nome, animais) {
 }
 
 
+function validarBrinquedos(brinquedosPessoa){
+  const brinquedos = ['RATO', 'BOLA', 'LASER', 'CAIXA', 'NOVELO', 'SKATE'];
+    const lista = brinquedosPessoa.split(',');
+    const verificados = [];
+
+   for (let brinquedo of lista) {
+    if (!brinquedos.includes(brinquedo)) {
+      throw new Error("Brinquedo inválido"); 
+    }
+    if (verificados.includes(brinquedo)) {
+      throw new Error("Brinquedo inválido"); 
+    }
+    verificados.push(brinquedo);
+  }
+}
+
 const ANIMAIS = [
   new Animal("Rex", "cão", ["RATO", "BOLA"]),
   new Animal("Mimi", "gato", ["BOLA", "LASER"]),
@@ -34,4 +50,4 @@ const ANIMAIS = [
 ];
 
 
-export { Animal, ANIMAIS, validarAnimal };
+export { Animal, ANIMAIS, validarAnimal, validarBrinquedos };

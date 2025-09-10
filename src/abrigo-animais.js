@@ -1,6 +1,6 @@
-import { ANIMAIS, validarAnimal } from "./animais.js";
+import { ANIMAIS, validarAnimal, validarBrinquedos } from "./animais.js";
 
-function checarOrdem(brinquedosDaPessoa, brinquedosDoAnimal) {
+function verificarAdocao(brinquedosDaPessoa, brinquedosDoAnimal) {
   let i = 0;
   for (let brinquedo of brinquedosDaPessoa) {
     if (brinquedo === brinquedosDoAnimal[i]) {
@@ -13,7 +13,7 @@ function checarOrdem(brinquedosDaPessoa, brinquedosDoAnimal) {
   return false;
 }
 
-function casoEspecial(brinquedosPessoa, brinquedosDoLoco) {
+function casoEspecialLoco(brinquedosPessoa, brinquedosDoLoco) {
   let i = 0;
   for (let brinquedo of brinquedosPessoa) {
     for (let brinquedoLoco of brinquedosDoLoco) {
@@ -22,10 +22,26 @@ function casoEspecial(brinquedosPessoa, brinquedosDoLoco) {
       }
     }
   }
-    if (i === brinquedosDoLoco.length){
-      return true;
-    }
-    return false;
+  if (i === brinquedosDoLoco.length) {
+    return true;
+  }
+  return false;
+}
+
+function decidirAdocao(condicaoPessoa1, condicaoPessoa2, contador1, contador2) {
+  let decisao;
+
+  if (condicaoPessoa1 && !condicaoPessoa2 && contador1 < 3) {
+    decisao = "pessoa 1";
+    contador1++;
+  } else if (condicaoPessoa2 && !condicaoPessoa1 && contador2 < 3) {
+    decisao = "pessoa 2";
+    contador2++;
+  } else {
+    decisao = "abrigo";
+  }
+
+  return { decisao, contador1, contador2 };
 }
 
 class AbrigoAnimais {
@@ -37,61 +53,52 @@ class AbrigoAnimais {
 
     let contadorPessoa1 = 0;
     let contadorPessoa2 = 0;
+    let temCompanhia = false;
 
     for (let nome of animais) {
       const animal = ANIMAIS.find((a) => a.nome === nome);
       let decisao;
 
       try {
-        validarAnimal(animal, nome, animais);   
+        validarAnimal(animal, nome, animais);
       } catch (error) {
-        return { erro: error.message };
+        return { erro: "Animal inválido" };
+      }
+
+      try {
+        validarBrinquedos(brinquedosPessoa1);
+        validarBrinquedos(brinquedosPessoa2);
+      } catch (error) {
+        return { erro: "Brinquedo inválido" };
       }
 
       if (animal.nome === "Loco") {
-        let pessoaCasoEspecial1 = casoEspecial(brinquedos1, animal.brinquedosFavoritos);
-        let pessoaCasoEspecial2 = casoEspecial(brinquedos2, animal.brinquedosFavoritos);
-
-
-        if (pessoaCasoEspecial1 && contadorPessoa1 > 0) {
-          pessoaCasoEspecial1 = true;
-        } else {
-          pessoaCasoEspecial1 = false;
-        }
-
-         if (pessoaCasoEspecial2 && contadorPessoa2 > 0) {
-          pessoaCasoEspecial2 = true;
-        } else {
-          pessoaCasoEspecial2 = false;
-        }
-
-  
-        if (pessoaCasoEspecial1 && !pessoaCasoEspecial2 && contadorPessoa1 < 3) {
-          decisao = "pessoa 1";
-          contadorPessoa1++;
-        } else if (pessoaCasoEspecial2 && !pessoaCasoEspecial1 && contadorPessoa1 < 3) {
-          decisao = "pessoa 2";
-          contadorPessoa2;
-        } else {
+        if (!temCompanhia) {
           decisao = "abrigo";
+        } else {
+          let pessoaCasoEspecial1 = casoEspecialLoco(brinquedos1, animal.brinquedosFavoritos);
+          let pessoaCasoEspecial2 = casoEspecialLoco(brinquedos2,animal.brinquedosFavoritos);
+
+          const resultado = decidirAdocao(pessoaCasoEspecial1,pessoaCasoEspecial2,contadorPessoa1,contadorPessoa2);
+
+          decisao = resultado.decisao;
+          contadorPessoa1 = resultado.contador1;
+          contadorPessoa2 = resultado.contador2;
         }
       } else {
-        const pessoa1 = checarOrdem(brinquedos1, animal.brinquedosFavoritos);
-        const pessoa2 = checarOrdem(brinquedos2, animal.brinquedosFavoritos);
+        const pessoa1 = verificarAdocao(brinquedos1,animal.brinquedosFavoritos);
+        const pessoa2 = verificarAdocao(brinquedos2,animal.brinquedosFavoritos);
 
-        if (pessoa1 && !pessoa2 && contadorPessoa1 < 3) {
-          decisao = "pessoa 1";
-          contadorPessoa1++;
-        } else if (pessoa2 && !pessoa1 && contadorPessoa1 < 3) {
-          decisao = "pessoa 2";
-          contadorPessoa2++;
-        } else {
-          decisao = "abrigo";
-        }
+        const resultado = decidirAdocao(pessoa1,pessoa2,contadorPessoa1,contadorPessoa2);
+
+        decisao = resultado.decisao;
+        contadorPessoa1 = resultado.contador1;
+        contadorPessoa2 = resultado.contador2;
       }
 
-      if (contadorPessoa1 >= 1) [];
-
+      if (decisao !== "abrigo") {
+        temCompanhia = true;
+      }
       listaFinal.push(`${nome} - ${decisao}`);
     }
     return { lista: listaFinal.sort() };

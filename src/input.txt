@@ -1,1 +1,1 @@
-'BOLA,LASER';'BOLA,SKATE,NOVELO,RATO,LASER';'Mimi,Fofo,Loco,Bola'
+'RATO,BOLA';'CAIXA,NOVELO,RATO';'Rex,Fofo,Loco,Bola'
