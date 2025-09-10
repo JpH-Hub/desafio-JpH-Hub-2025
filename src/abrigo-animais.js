@@ -55,6 +55,9 @@ class AbrigoAnimais {
     let contadorPessoa2 = 0;
     let temCompanhia = false;
 
+    let gatoPessoa1 = false;
+    let gatoPessoa2 = false;
+
     for (let nome of animais) {
       const animal = ANIMAIS.find((a) => a.nome === nome);
       let decisao;
@@ -77,23 +80,50 @@ class AbrigoAnimais {
           decisao = "abrigo";
         } else {
           let pessoaCasoEspecial1 = casoEspecialLoco(brinquedos1, animal.brinquedosFavoritos);
-          let pessoaCasoEspecial2 = casoEspecialLoco(brinquedos2,animal.brinquedosFavoritos);
+          let pessoaCasoEspecial2 = casoEspecialLoco(brinquedos2, animal.brinquedosFavoritos);
 
-          const resultado = decidirAdocao(pessoaCasoEspecial1,pessoaCasoEspecial2,contadorPessoa1,contadorPessoa2);
+          const resultado = decidirAdocao(
+            pessoaCasoEspecial1,
+            pessoaCasoEspecial2,
+            contadorPessoa1,
+            contadorPessoa2
+          );
 
           decisao = resultado.decisao;
           contadorPessoa1 = resultado.contador1;
           contadorPessoa2 = resultado.contador2;
         }
       } else {
-        const pessoa1 = verificarAdocao(brinquedos1,animal.brinquedosFavoritos);
-        const pessoa2 = verificarAdocao(brinquedos2,animal.brinquedosFavoritos);
+        const pessoa1 = verificarAdocao(brinquedos1, animal.brinquedosFavoritos);
+        const pessoa2 = verificarAdocao(brinquedos2, animal.brinquedosFavoritos);
 
-        const resultado = decidirAdocao(pessoa1,pessoa2,contadorPessoa1,contadorPessoa2);
+        const resultado = decidirAdocao(
+          pessoa1,
+          pessoa2,
+          contadorPessoa1,
+          contadorPessoa2
+        );
 
         decisao = resultado.decisao;
         contadorPessoa1 = resultado.contador1;
         contadorPessoa2 = resultado.contador2;
+      }
+
+      
+      if (animal.tipo === "gato") {
+        if (decisao === "pessoa 1") {
+          if (gatoPessoa1) {
+            decisao = "abrigo"; 
+          } else {
+            gatoPessoa1 = true;
+          }
+        } else if (decisao === "pessoa 2") {
+          if (gatoPessoa2) {
+            decisao = "abrigo";
+          } else {
+            gatoPessoa2 = true;
+          }
+        }
       }
 
       if (decisao !== "abrigo") {
@@ -104,5 +134,6 @@ class AbrigoAnimais {
     return { lista: listaFinal.sort() };
   }
 }
+
 
 export { AbrigoAnimais as AbrigoAnimais };
